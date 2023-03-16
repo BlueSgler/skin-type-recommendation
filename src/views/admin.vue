@@ -1,0 +1,36 @@
+<template>
+    <div class="common-layout">
+        <el-container>
+            <el-header>
+                <Header></Header>
+            </el-header>
+            <el-container>
+                <el-aside width="200px">
+                    <Menu></Menu>
+                </el-aside>
+                <el-main>
+                    <Main></Main>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+</template>
+<script lang="ts" setup>
+import Menu from '../components/admin/Menu.vue'
+import Main from '../components/admin/Main.vue'
+import Header from '../components/admin/Header.vue'
+</script>
+<style lang="scss" scoped>
+.el-header {
+    box-shadow: inset 0px -1px 7px -3px rgb(168, 168, 168);
+}
+
+.common-layout {}
+
+.el-container {
+    height: 100vh;
+
+
+    .el-aside {}
+}
+</style>

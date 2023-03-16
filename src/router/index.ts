@@ -1,30 +1,47 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import axios from "axios";
+import { RouteRecordRaw, Router } from 'vue-router';
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
         redirect: '/login',
     },
-    // {
-    //     path: '/home',
-    //     component: HomeView,
-    //     children: [
-    //         {
-    //             path: '',
-    //             redirect: '/home/index'
-    //         },
-    //         {
-    //             path: 'index',
-    //             component: () => import('@/pages/index.vue'),
-    //             name: '主页'
-    //         },
-            
-    //     ]
-    // },
+    {
+        path: '/home',
+        component: () => import('../views/home.vue'),
+
+    },
     {
         path: '/login',
-        component: () => import('@/views/login.vue'),
+        component: () => import('../views/login.vue'),
+    },
+    {
+        path: '/admin',
+        component: () => import('../views/admin.vue'),
+        children: [
+            {
+                path: '',
+                redirect: (to) => {
+                    return to.path + '/cosmetic'
+                }
+            },
+            {
+                path: 'cosmetic',
+                component: () => import('../components/admin/Cosmetic.vue'),
+                name: '主页'
+            },
+            {
+                path: 'tag',
+                component: () => import('../components/admin/Tag.vue'),
+                name: '标签'
+            },
+            {
+                path: 'user',
+                component: () => import('../components/admin/User.vue'),
+                name: '用户'
+            },
+
+        ]
     }
 ]
 
@@ -34,31 +51,20 @@ const router = createRouter({
 })
 
 // 前置路由守卫
-router.beforeEach((to, from, next) => {
-    console.log(to, from);
-    if (to.name === '主页' || to.name === "设备管理" || to.name === '修理记录' || to.name === "报废记录" || to.name === "购买申请" || to.name === "申请表") {
-        if (window.sessionStorage.getItem("token")) {
-            next()
-        }
-        else {
-            confirm("请先登录！")
-        }
-    }
-    else {
-        next()
-    }
-})
+// router.beforeEach((to, from, next) => {
+//     console.log(to, from);
+//     if (to.name === '主页' || to.name === "设备管理" || to.name === '修理记录' || to.name === "报废记录" || to.name === "购买申请" || to.name === "申请表") {
+//         if (window.sessionStorage.getItem("token")) {
+//             next()
+//         }
+//         else {
+//             confirm("请先登录！")
+//         }
+//     }
+//     else {
+//         next()
+//     }
+// })
 
-// 添加请求拦截器
-axios.interceptors.request.use(function (config) {
-    // 在发送请求之前做些什么
-    // 判断是否存在token,如果存在将每个页面header添加token
-    if (sessionStorage.getItem("token")) {
-        config.headers.common['Authorization'] = "Bearer " + window.sessionStorage.getItem("token");
-    }
-    return config
-}, function (error) {
-    router.push('/login')
-    return Promise.reject(error)
-})
+
 export default router
