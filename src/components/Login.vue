@@ -128,7 +128,7 @@ const doLogin = () => {
 
           sessionStorage.setItem('token', res.result)
           token.value = res.result
-          router.push('../views/home.vue')
+          router.push('../home.vue')
 
           ElMessage({
             message: '登录成功！',

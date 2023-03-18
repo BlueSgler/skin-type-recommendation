@@ -1,7 +1,7 @@
 <template>
     <el-row class="tac">
         <el-col>
-            <el-menu default-active="/admin/cosmetic" class="el-menu-vertical-demo" active-text-color="#06a7ff">
+            <el-menu :default-active="activePath" class="el-menu-vertical-demo" active-text-color="#06a7ff">
                 <el-menu-item :index="item.path" v-for="item in menuData" :key="item.id" @click="goto(item.path)">
                     <template #title>
                         <el-icon>
@@ -18,20 +18,13 @@
 
 <script lang="ts" setup>
 import {
-    Document,
     Menu as IconMenu,
     Location,
-    Setting,
     House,
-    Files,
-    Delete,
     Share,
     User,
-    Download,
-    HomeFilled,
-    Management,
 } from '@element-plus/icons-vue'
-import { onMounted, reactive, ref, shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 // import {
 //     getUserInfoApi
@@ -50,21 +43,21 @@ type MenuType = {
 }
 
 //激活路径
-let activePath = ref<string | null>('/admin/cosmetic')
+let activePath = ref<string | null>('')
 const goto = (path: string) => {
+    saveNavState(path)
     router.push(path)
-}
-
-const onMounted = () => {
-
 }
 
 const initPath = () => {
     //从本地获取激活状态
+
     if (window.sessionStorage.getItem('activePath') === null) {
         activePath.value = '/admin/cosmetic'
     } else {
+
         activePath.value = window.sessionStorage.getItem('activePath')
+        console.log('jererj', activePath.value);
     }
 }
 

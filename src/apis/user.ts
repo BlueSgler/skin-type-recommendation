@@ -1,11 +1,25 @@
 // src/api/user.ts
 import instance from './config';
 
-const getUserInfo = () => {
-    return instance.get('/user/info');
+const getUsers = (currentPage: string, pageSize:string) => {
+    return instance({
+        method: 'GET',
+        url:`/admin/users/${currentPage}/${pageSize}`
+    })
 };
-
-export { getUserInfo };
+const addUser = (id:string) => {
+    return instance({
+        method: 'PATCH',
+        url:`/admin/user/${id}`
+    })
+}
+const deleteUser = (id: string) => {
+    return instance({
+        method: 'DELETE',
+        url: `/admin/user/${id}`
+    })
+}
+export { getUsers, addUser, deleteUser };
 
 // // src/api/article.ts
 // import instance from '../utils/api'

@@ -7,8 +7,8 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/login',
     },
     {
-        path: '/home',
-        component: () => import('../views/home.vue'),
+        path: '/navagation',
+        component: () => import('../views/navagation.vue'),
 
     },
     {
@@ -27,17 +27,22 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'cosmetic',
-                component: () => import('../components/admin/Cosmetic.vue'),
+                component: () => import('../components/admin/cosemtic/Cosmetic.vue'),
                 name: '主页'
             },
             {
                 path: 'tag',
-                component: () => import('../components/admin/Tag.vue'),
+                component: () => import('../components/admin/tag/Tag.vue'),
                 name: '标签'
             },
+            // {
+            //     path: 'lala',
+            //     component: () => import('../components/admin/tag/AddTag.vue'),
+            //     name: '添加标签'
+            // },
             {
                 path: 'user',
-                component: () => import('../components/admin/User.vue'),
+                component: () => import('../components/admin/user/User.vue'),
                 name: '用户'
             },
 
