@@ -5,7 +5,14 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('user', {
     state: () => ({
         userInfo: {
-            nickName: ''
+            id: undefined,
+            username: "",
+            nickname: "",
+            avatar: "",
+            identity: undefined,
+            gender: undefined,
+            createTime: "",
+            updateTime: ""
         },
         token: 'eyJhbGciOiJIUzI1NiJ9.eyJuaWNrTmFtZSI6ImJsZXIiLCJ1c2VySWQiOjQsImp0aSI6InRva2VuSWQiLCJpYXQiOjE2Nzg5MzQwMjcsImV4cCI6MTY3OTUzODgyN30.8-jqle8T_RorAFO33goJZq9Cf9uSxGtaunnRdIxMfCQ'
     }),
@@ -14,5 +21,9 @@ export const useStore = defineStore('user', {
     },
     actions: {
 
+    },
+    // 开启数据缓存
+    persist: {
+        enabled: true
     }
 })

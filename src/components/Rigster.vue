@@ -109,7 +109,6 @@ const registerFormRef: Ref<typeof ElForm | undefined> = ref();
 const rules = reactive({
     username: [
         { required: true, message: '请输入邮箱', trigger: 'blur' },
-        // { min: 3, max: 5, message: '长度应该在3~5个字符之间', trigger: 'blur' },
     ],
     password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
@@ -249,7 +248,7 @@ input:focus::placeholder {
 
 /* 按钮盒子 */
 .btn-box {
-    margin-top: 20px;
+    margin-top: 40px;
     display: flex;
     justify-content: center;
 }

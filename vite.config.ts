@@ -4,6 +4,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import { loadEnv } from 'vite';
+import { fileURLToPath } from 'url';
 // // 加载环境变量
 
 export default defineConfig(({ command, mode }) => {
@@ -21,5 +22,10 @@ export default defineConfig(({ command, mode }) => {
     define: {
       __APP_ENV__: env,
     },
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
+    }
   }
 });

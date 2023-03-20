@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="margin-right: 10px;">
         <el-popconfirm width="220" confirm-button-text="确认" cancel-button-text="取消" @confirm="emitDelete(); handleDelete()"
             icon-color="#626AEF" title="确定删除这个标签吗?">
             <template #reference>

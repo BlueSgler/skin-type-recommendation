@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '../router'
 
@@ -27,41 +28,70 @@ instance.interceptors.request.use(
     }
 )
 
-instance.interceptors.response.use(
-    response => {
-        // 对响应数据做些什么
-        console.log(response, '====>resp');
+type Response = {
+    result: any,
+    message: string,
+    succeed: boolean
+}
 
-        const res = response.data
-        console.log(res, '---->res');
+// instance.interceptors.response.use(
+//     (res) => {
+//         // 对响应数据做些什么
+//         console.log(res, '====>resp');
+//         return Promise.resolve(res as Res)
+//         // const res = response.data
+//         // console.log(res, '---->res');
 
 
-        if (typeof res.data === 'object' && res.data !== null) {
+//         // if (typeof res.data === 'object' && res.data !== null) {
+//         //     if (res.succeed) {
+//         //         return response;
+//         //     }
+//         //     throw new Error(res.message)
+//         // }
+
+//         // if (res.data) {
+//         //     return response
+//         // }
+
+//         // if (res instanceof Blob) {
+//         //     return response
+//         // }
+//         // if (res.succeed) {
+//         //     return response
+//         // }
+
+//         // throw new Error(res.message)
+//     },
+//     error => {
+//         // 对响应错误做些什么
+//         ElMessage.error(error.message || '未知错误')
+//         return Promise.reject(error)
+//     }
+// )
+
+const http = async (config: AxiosRequestConfig, isShowMsg = true, successMsg?: string): Promise<Response> => {
+    try {
+        const axiosRes = await instance(config)
+        const res: Response = axiosRes.data
+        if (res instanceof Blob) {
+            return res
+        }
+        if (res) {
             if (res.succeed) {
-                return response;
+                if (isShowMsg) {
+                    ElMessage.success(successMsg ? successMsg : res.message || '成功')
+                }
+                return res
             }
             throw new Error(res.message)
         }
-
-        if (res.data) {
-            return response
+        throw new Error('unknown err')
+    } catch (err) {
+        if (err instanceof Error) {
+            ElMessage.error(err.message || '未知错误')
         }
-
-        if (res instanceof Blob) {
-            return response
-        }
-        if (res.succeed) {
-            return response
-        }
-
-        throw new Error(res.message)
-    },
-    error => {
-        // 对响应错误做些什么
-        ElMessage.error(error.message || '未知错误')
-        return Promise.reject(error)
+        throw err
     }
-)
-
-
-export default instance
+}
+export default http

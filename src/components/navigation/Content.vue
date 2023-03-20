@@ -25,7 +25,6 @@ import { ref } from 'vue'
 import { ElMessage, TagProps } from 'element-plus'
 import { getAllRootTags, getTags, preference } from '../../apis/tag';
 import router from '../../router';
-const active1 = ref(true)
 
 type Item = {
     children?: Item[],
@@ -51,7 +50,7 @@ interface Tag {
 }
 const rootList = ref<Tag[]>([])
 const DoGetAllTags = async () => {
-    const { data: res } = await getAllRootTags()
+    const res = await getAllRootTags(false)
     if (res.succeed) {
         rootList.value = res.result
         items.value = rootList.value.map((item) => {
@@ -62,7 +61,7 @@ const DoGetAllTags = async () => {
         })
 
         items.value.forEach(async item => {
-            const { data: res } = await getTags(item.id)
+            const res = await getTags(item.id,false)
             item.children = res.result
         })
 
@@ -82,9 +81,9 @@ const active = (id: number) => {
     console.log(selectedIds.value);
 }
 const DoPreference = async () => {
-    const { data: res } = await preference({ tagIdList: selectedIds.value })
+    const res = await preference({ tagIdList: selectedIds.value })
     if (res.succeed) {
-        router.push('/admin')
+        router.push('/home')
     } else {
         ElMessage.error(res.message)
     }

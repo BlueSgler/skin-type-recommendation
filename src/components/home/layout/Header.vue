@@ -1,13 +1,12 @@
 <template>
     <div class="container">
         <div class="left-box">
-            美妆推荐后台管理
+            <img src="../../../assets/vue.svg" alt="">
         </div>
         <div class="right-box">
             <div class="avatar">
-                <img :src="userInfo.avatar" alt="">
+                <img :src="userInfo.avatar" alt="" @click="goToMy">
             </div>
-            <div class="name">{{ userInfo.nickname }}</div>
             <div class="logout" @click="logout">退出</div>
         </div>
     </div>
@@ -19,7 +18,11 @@ import { storeToRefs } from 'pinia'
 import { useStore } from '../../../stores/user'
 const store = useStore();
 let { userInfo, token } = storeToRefs(store);
+const goToMy = () => {
+    router.push('/mine')
+}
 const logout = () => {
+    console.log('logout');
     router.push('/login')
     sessionStorage.setItem('token', '')
     token.value = ''
@@ -46,6 +49,7 @@ const logout = () => {
             height: 40px;
             border-radius: 50%;
             overflow: hidden;
+            cursor: pointer;
 
             img {
                 width: 100%;

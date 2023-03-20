@@ -1,16 +1,16 @@
 // src/api/user.ts
 import instance from './config';
 
-const getUsers = (currentPage: string, pageSize:string) => {
+const getUsers = (currentPage: string, pageSize: string) => {
     return instance({
         method: 'GET',
-        url:`/admin/users/${currentPage}/${pageSize}`
+        url: `/admin/users/${currentPage}/${pageSize}`
     })
 };
-const addUser = (id:string) => {
+const addUser = (id: string) => {
     return instance({
         method: 'PATCH',
-        url:`/admin/user/${id}`
+        url: `/admin/user/${id}`
     })
 }
 const deleteUser = (id: string) => {
@@ -19,7 +19,27 @@ const deleteUser = (id: string) => {
         url: `/admin/user/${id}`
     })
 }
-export { getUsers, addUser, deleteUser };
+
+const getUserInfo = () => {
+    return instance({
+        method: 'GET',
+        url: '/user/info'
+    })
+}
+
+const updateNick = (name:string) => {
+    return instance({
+        method: 'PATCH',
+        url: `/user/nickname/${name}`
+    })
+}
+const updatePassword = (password: string) => {
+    return instance({
+        method: 'PATCH',
+        url: `/user/password/?password=${password}`
+    })
+}
+export { getUsers, addUser, deleteUser, getUserInfo, updateNick, updatePassword };
 
 // // src/api/article.ts
 // import instance from '../utils/api'

@@ -1,7 +1,7 @@
 <template>
     <el-row class="tac">
         <el-col>
-            <el-menu :default-active="activePath" class="el-menu-vertical-demo" active-text-color="#06a7ff">
+            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" active-text-color="#06a7ff">
                 <el-menu-item :index="item.path" v-for="item in menuData" :key="item.id" @click="goto(item.path)">
                     <template #title>
                         <el-icon>
@@ -25,11 +25,12 @@ import {
     User,
 } from '@element-plus/icons-vue'
 import { ref, shallowRef } from 'vue';
-import { useRouter } from 'vue-router';
+
+import router from '@/router';
+const defaultActive = router.currentRoute.value.path // 获取当前路径，让menu正确显示
 // import {
 //     getUserInfoApi
 // } from '@/apis/mine'
-const router = useRouter()
 
 
 
@@ -42,24 +43,10 @@ type MenuType = {
     path: string
 }
 
-//激活路径
-let activePath = ref<string | null>('')
 const goto = (path: string) => {
-    saveNavState(path)
     router.push(path)
 }
 
-const initPath = () => {
-    //从本地获取激活状态
-
-    if (window.sessionStorage.getItem('activePath') === null) {
-        activePath.value = '/admin/cosmetic'
-    } else {
-
-        activePath.value = window.sessionStorage.getItem('activePath')
-        console.log('jererj', activePath.value);
-    }
-}
 
 const comId = shallowRef(Location)
 //假数据，实际根据后端接口请求
@@ -84,15 +71,6 @@ const menuData: MenuType[] = [
         path: '/admin/user',
     }
 ]
-
-
-
-// 保存激活路径到本地
-const saveNavState = (activePath: string | null) => {
-    window.sessionStorage.setItem('activePath', activePath as string)
-}
-initPath()
-// getRole()
 
 </script>
 

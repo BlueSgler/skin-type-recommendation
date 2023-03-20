@@ -101,42 +101,33 @@ const handleSelectionChange = async (val: Tag[]) => {
 //批量删除
 const deleteHandler = async () => {
 
-  const { data: res } = await deleteArray(multipleSelection.value)
+  const res = await deleteArray(multipleSelection.value)
   if (res.succeed) {
-    ElMessage.success('删除成功')
     multipleSelection.value = []
     DoGetAllTags()
-  } else {
-    ElMessage.error(res.message)
   }
 }
 
 const search = ref('')
 const doSeach = async () => {
-  const { data: res } = await getTags(JSON.parse(search.value))
+  const res = await getTags(JSON.parse(search.value),false)
   if (res.succeed) {
     tableData.value = res.result
   }
 }
 const DoGetAllTags = async () => {
-  const { data: res } = await getAllRootTags()
+  const res = await getAllRootTags(false)
   console.log(res, 'tags');
   if (res.succeed) {
     tableData.value = res.result
-  } else {
-    ElMessage.error(res.message)
-  }
-
+  } 
 
 }
 const handleDelete = async (index: number, row: Tag) => {
   console.log(index, row)
-  const { data: res } = await deleteTag(JSON.stringify(row.id))
+  const res = await deleteTag(JSON.stringify(row.id))
   if (res.succeed) {
-    ElMessage.success('删除成功！')
     DoGetAllTags()
-  } else {
-    ElMessage.error(res.message)
   }
 }
 
@@ -146,14 +137,11 @@ const addHandler = () => {
 }
 
 const doAddTag = async () => {
-  const { data: res } = await addTag(addForm.value)
+  const res = await addTag(addForm.value)
   if (res.succeed) {
-    ElMessage.success('添加成功！')
     dialogFormVisible.value = false
     DoGetAllTags()
 
-  } else {
-    ElMessage.error(res.message)
   }
 }
 

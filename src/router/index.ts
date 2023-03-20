@@ -7,8 +7,18 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/login',
     },
     {
-        path: '/navagation',
-        component: () => import('../views/navagation.vue'),
+        path: '/navigation',
+        component: () => import('../views/navigation.vue'),
+
+    },
+    {
+        path: '/home',
+        component: () => import('../views/home.vue'),
+
+    },
+    {
+        path: '/mine',
+        component: () => import('../views/mine.vue'),
 
     },
     {

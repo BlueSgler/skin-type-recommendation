@@ -25,7 +25,7 @@
       <el-form-item prop="verifyCode" label=" ">
         <el-input type="text" placeholder="邮箱验证码" v-model="loginForm.verifyCode" class="input-with-select">
           <template #append>
-            <div @click="doSentCode">发送</div>
+            <div class="send" @click="doSentCode">发送</div>
           </template>
         </el-input>
 
@@ -47,16 +47,17 @@ import { ElMessage } from 'element-plus'
 import { ElForm } from 'element-plus';
 import { swicher } from '../utils/mySwitch'
 import { getImageCode, login, sentCode } from '../apis/login'
+import { getUserInfo } from '../apis/user'
 import { storeToRefs } from 'pinia'
 import { useStore } from '../stores/user'
 import router from '../router';
 const store = useStore();
-let { token } = storeToRefs(store);
+let { token, userInfo } = storeToRefs(store);
 const imageCode = ref('')
 const randomString = ref('')
 const loginForm = reactive({
   username: '',
-  password: '1234564',
+  password: '123456',
   verifyCode: '',
   code: ''
 })
@@ -98,8 +99,8 @@ const doGetImgeCode = async () => {
   try {
     const res = await getImageCode(randomString.value)
     console.log(res, 'here====================>');
-    if (res.data) {
-      const blob = new Blob([res.data], { type: 'image/png' })
+    if (res) {
+      const blob = new Blob([res as any], { type: 'image/png' })
       console.log(blob.type, '=>type');
 
       const url = URL.createObjectURL(blob)
@@ -112,38 +113,46 @@ const doGetImgeCode = async () => {
   }
 }
 const doSentCode = async () => {
-  const res = await sentCode(randomString.value, loginForm.code, loginForm.username)
+  const res = await sentCode(randomString.value, loginForm.code, loginForm.username, '发送邮箱验证码，请注意查收!')
   console.log(res);
+
 }
 const doLogin = () => {
   loginFormRef.value?.validate(async (valid: boolean) => {
     if (valid) {
-      try {
-        const newLoginForm: any = { ...loginForm }
-        delete newLoginForm.code
-        const { data: res } = await login(newLoginForm)
-        console.log(res, '=====>here')
 
-        if (res.succeed) {
+      const newLoginForm: any = { ...loginForm }
+      delete newLoginForm.code
+      const res = await login(newLoginForm)
+      console.log(res, '=====>here')
 
-          sessionStorage.setItem('token', res.result)
-          token.value = res.result
-          router.push('../home.vue')
+      if (res.succeed) {
 
-          ElMessage({
-            message: '登录成功！',
-            type: 'success',
-          })
+        sessionStorage.setItem('token', res.result)
+        token.value = res.result
+        DogetUserInfo()
+        if (localStorage.getItem('first')) {
+          router.push('/home')
+        } else {
+          localStorage.setItem('first', '1')
+          router.push('/navigation')
+
         }
-      } catch (error) {
-        console.error(error)
       }
+
     } else {
       return
     }
   })
 }
-
+const DogetUserInfo = async () => {
+  const res = await getUserInfo()
+  if (res.succeed) {
+    userInfo.value = res.result
+  } else {
+    ElMessage.error(res.message)
+  }
+}
 doGetImgeCode()
 onMounted(() => {
 
@@ -152,6 +161,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.send {
+  cursor: pointer;
+}
+
 /* 登录和注册盒子 */
 .login-form,
 .register-form {

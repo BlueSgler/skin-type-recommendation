@@ -31,6 +31,13 @@ import Header from '../components/admin/layout/Header.vue'
     height: 100vh;
 
 
-    .el-aside {}
+    .el-aside {
+        height: calc(100vh - 60px);
+    }
+
+    .el-main {
+        // box-shadow: 1px 2px 3px 4px #bdbdbd;
+        border-left: 1px solid #e5e5e5;
+    }
 }
 </style>

@@ -58,7 +58,7 @@ interface User {
 
 const tableData = ref<User[]>([])
 const DoGetUsers = async () => {
-  const { data: res } = await getUsers('1', '100')
+  const res = await getUsers('1', '100')
   if (res.succeed) {
     res.records.forEach((item: any) => {
       if (item.identity === 1) {
@@ -76,7 +76,7 @@ const DoGetUsers = async () => {
 
 }
 const changeIdentity = async (row: any) => {
-  const { data: res } = await addUser(JSON.stringify(row.id))
+  const res = await addUser(JSON.stringify(row.id))
   if (res.succeed) {
     ElMessage.success('添加管理员成功！')
   } else {
@@ -85,7 +85,7 @@ const changeIdentity = async (row: any) => {
 }
 const handleDelete = async (index: number, row: User) => {
   console.log(index, row)
-  const { data: res } = await deleteUser(JSON.stringify(row.id))
+  const res = await deleteUser(JSON.stringify(row.id))
   if (res.succeed) {
     ElMessage.success('删除成功！')
     DoGetUsers()

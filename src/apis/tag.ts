@@ -1,17 +1,17 @@
 import instance from './config';
 
-const getAllRootTags = () => {
+const getAllRootTags = (isShowMsg: boolean) => {
     return instance({
         method: "GET",
         url: `/tag/list/root`,
-    })
+    }, isShowMsg)
 };
 
-const getTags = (id: number) => {
+const getTags = (id: number, isShowMsg: boolean) => {
     return instance({
         method: "GET",
         url: `/tag/list/${id}`,
-    })
+    }, isShowMsg)
 }
 const addTag = (data: object) => {
     return instance({
