@@ -8,6 +8,9 @@
                 <div :class="[selectedIds.includes(subitem.id) ? 'active' : '', 'child-item']"
                     v-for="subitem in item.children" @click="active(subitem.id)">{{ subitem.name }}
                 </div>
+                <el-link type="primary" v-if="item.name === '适合肤质'" size="small"
+                    style="font-size:10px;position:absolute;right:10px;bottom: 10px;"
+                    @click="goNavigation">还不知道自己的肤质?点击这里开始测试</el-link>
             </div>
             <div class="empty child-list" v-else>
                 暂无数据
@@ -61,7 +64,7 @@ const DoGetAllTags = async () => {
         })
 
         items.value.forEach(async item => {
-            const res = await getTags(item.id,false)
+            const res = await getTags(item.id, false)
             item.children = res.result
         })
 
@@ -88,6 +91,10 @@ const DoPreference = async () => {
         ElMessage.error(res.message)
     }
 }
+
+const goNavigation = () => {
+    router.push('/navigation')
+}
 DoGetAllTags()
 
 </script>
@@ -113,6 +120,7 @@ DoGetAllTags()
         padding: 10px;
         display: flex;
         justify-content: start;
+        position: relative;
 
         .child-item {
             border: 1px solid #fab6b6;

@@ -82,8 +82,8 @@ const doGetImgeCode = async () => {
     try {
         const res = await getImageCode(randomString.value)
         console.log(res, 'here====================>');
-        if (res.data) {
-            const blob = new Blob([res.data])
+        if (res) {
+            const blob = new Blob([res as any])
             console.log(blob.type, '=>type');
 
             const url = URL.createObjectURL(blob)
@@ -127,7 +127,7 @@ const rules = reactive({
     ]
 })
 const doSentCode = async () => {
-    const res = await sentCode(randomString.value, registerForm.code, registerForm.username)
+    const res = await sentCode(randomString.value, registerForm.code, registerForm.username,'邮箱验证码已发送，请注意查收!')
     console.log(res);
 
 }

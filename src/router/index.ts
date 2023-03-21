@@ -7,6 +7,11 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/login',
     },
     {
+        path: '/chooseTags',
+        component: () => import('../views/chooseTags.vue'),
+
+    },
+    {
         path: '/navigation',
         component: () => import('../views/navigation.vue'),
 
