@@ -61,5 +61,11 @@ const preference = (data: object) => {
         data
     })
 }
-
-export { getAllCometics, getCometics, getCometicsDeTail, addCometic, updateCometic, deleteCometic, deleteArray, preference };
+const search = (data: object) => {
+    return instance({
+        method: 'POST',
+        url: '/cosmetic/list',
+        data
+    })
+}
+export { getAllCometics, getCometics, getCometicsDeTail, addCometic, updateCometic, deleteCometic, deleteArray, preference, search };

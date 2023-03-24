@@ -3,7 +3,8 @@
         <div class="btn-group">
             <Add @click="addHandler"></Add>
             <Delete @emitDelete="deleteHandler"></Delete>
-            <el-cascader :options="options" :props="props" clearable />
+            <el-cascader :options="options" :props="props" clearable @change="handleChange" />
+            <el-button @click="DoSearch">搜索</el-button>
         </div>
         <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" />
@@ -48,6 +49,10 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pag">
+            <el-pagination background v-model:current-page="query.currentPage" :page-size="10"
+                layout="total, prev, pager, next" :total="total" @current-change="handleCurrentChange" />
+        </div>
         <el-dialog v-model="dialogFormVisible" title="添加化妆品">
             <el-form :model="addForm">
                 <el-form-item label="名称" label-width="140px">
@@ -111,7 +116,7 @@
                     <div class="post-img">
                         <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
                             :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="header">
-                            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                            <img v-if="editForm.cover" :src="editForm.cover" class="avatar" />
                             <el-icon v-else class="avatar-uploader-icon" size="50">
                                 <upload-filled />
                             </el-icon>
@@ -134,8 +139,10 @@
                     <div class="item" v-for="item in items">
                         <div class="title">{{ item.name }}</div>
                         <div class="options">
-                            <span class="option" v-for="subItem in item.children" :key="subItem.id"
-                                @click="active(subItem.id)">{{ subItem.name }}</span>
+                            <span :class="[editForm.tagIdList.includes(subItem.id) ? 'active' : '', 'option']"
+                                v-for="subItem in item.children" :key="subItem.id"
+                                @click="active2(subItem.id)">{{ subItem.name }}
+                            </span>
                         </div>
                     </div>
 
@@ -144,7 +151,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogFormVisible2 = false">取消</el-button>
-                    <el-button type="primary" @click="doAddCometic">
+                    <el-button type="primary" @click="doEidtCometic">
                         保存
                     </el-button>
                 </span>
@@ -156,7 +163,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getAllCometics, getCometics, getCometicsDeTail, addCometic, updateCometic, deleteCometic, deleteArray, preference } from '../../../apis/cosmetic'
+import { getAllCometics, getCometics, getCometicsDeTail, addCometic, updateCometic, deleteCometic, deleteArray, preference, search } from '../../../apis/cosmetic'
 import { getAllRootTags, getTags } from '../../../apis/tag';
 import { Search, InfoFilled, Edit } from '@element-plus/icons-vue'
 import Add from '../../common/Add.vue'
@@ -166,6 +173,13 @@ import { UploadFilled } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 const props = { multiple: true }
 
+const query = ref({
+    pageSize: 10,
+    currentPage: 1,
+    tagIdList: []
+
+})
+const total = ref(0)
 interface optionsType {
     value: string,
     label: string,
@@ -219,8 +233,8 @@ type Item = {
     createTime: string
 }
 const items = ref<Item[]>([])
-const items2 = ref<Item[]>([])
 interface addFormType {
+    id?: number
     cover: string
     price: number
     name: string
@@ -241,6 +255,7 @@ const addForm = ref<addFormType>({
     tagIdList: []
 })
 const editForm = ref<addFormType>({
+    id: undefined,
     cover: '',
     price: 0,
     name: '',
@@ -262,16 +277,27 @@ const DoGetAllTags = async () => {
                 children: []
             }
         })
+        for (let i = 0; i < items.value.length; i++) {
+            const res = await getTags(items.value[i].id, false)
+            items.value[i].children = res.result
+        }
+        options.value = items.value.map((ele) => {
+            const children = ele.children?.map((child) => {
+                return {
+                    value: String(child.id),
+                    label: child.name
+                }
+            })
 
-        items.value.forEach(async item => {
-            const res = await getTags(item.id, false)
-            item.children = res.result
+            return {
+                value: String(ele.id),
+                label: ele.name,
+                children
+            }
         })
-        console.log(items.value);
     }
 }
 const selectedIds = ref<number[]>([])
-const selectedIds2 = ref<number[]>([])
 const active = (id: number) => {
     if (selectedIds.value.includes(id)) {
         selectedIds.value = selectedIds.value.filter(item => {
@@ -284,17 +310,14 @@ const active = (id: number) => {
     addForm.value.tagIdList = selectedIds.value
 }
 const active2 = (id: number) => {
-    if (selectedIds2.value.includes(id)) {
-        selectedIds2.value = selectedIds2.value.filter(item => {
+    if (editForm.value.tagIdList.includes(id)) {
+        editForm.value.tagIdList = editForm.value.tagIdList.filter(item => {
             return item != id
         })
     } else {
-        selectedIds2.value.push(id)
+        editForm.value.tagIdList.push(id)
     }
-    console.log(selectedIds2.value);
-    editForm.value.tagIdList = selectedIds2.value
 }
-
 
 
 interface Cometic {
@@ -326,31 +349,13 @@ const handleEdit = (row: any) => {
     editForm.value.originalUrl = row.originalUrl
     editForm.value.sourceWarehouse = row.sourceWarehouse
     editForm.value.brand = row.brand
-    editForm.value.tagIdList = row.tagIdList
+    editForm.value.id = row.id
+    editForm.value.cover = row.cover
+    editForm.value.tagIdList = row.tagVOList.map((tag: Tag) => {
+        return tag.id
+    })
     imageUrl.value = row.cover
-    // items.value=row.tagVOList
-    console.log(row.tagVOList, 'ids');
 
-
-    items2.value = row.tagVOList
-    let b = rootList.value
-    
-    for (let i =0; i < row.tagVOList.length; i++) {
-        if (row.tagVOList[i].parentId === 1) {
-            for (let j = 0; j < b.length; j++){
-                
-            }
-        }
-    }
-    selectedIds2.value = items2.value.map(element => {
-
-
-        return element.id
-    });
-    console.log(selectedIds2.value, 'aa');
-
-
-    console.log(editForm.value);
     dialogFormVisible2.value = true
 
 }
@@ -364,9 +369,6 @@ const handleSelectionChange = async (val: Cometic[]) => {
         }
 
     })
-    console.log(multipleSelection.value, 'shuzu');
-
-
 }
 
 //批量删除
@@ -378,26 +380,29 @@ const deleteHandler = async () => {
     }
 }
 
-const search = ref('')
-const doSeach = async () => {
-    const res = await getCometics(JSON.parse(search.value))
-    if (res.succeed) {
-        tableData.value = res.result
-    }
-}
+
 const DoGetAllCometics = async () => {
-    const res = await getAllCometics({
-        pageSize: 10,
-        currentPage: 1
-    }, false)
-    console.log(res, 'res');
+    console.log(query.value, 'jfeijfie');
+
+    const res = await getAllCometics(query.value, false)
     if (res.succeed) {
         tableData.value = res.result.records
+        total.value = res.result.total
     } else {
         ElMessage.error(res.message)
     }
 
 
+}
+
+const DoSearch = async () => {
+    const res = await search(query.value)
+    if (res.succeed) {
+        tableData.value = res.result.records
+        total.value = res.result.total
+    } else {
+        ElMessage.error(res.message)
+    }
 }
 const handleDelete = async (index: number, row: Tag) => {
     console.log(index, row)
@@ -415,10 +420,28 @@ const addHandler = () => {
 const doAddCometic = async () => {
     const res = await addCometic(addForm.value)
     if (res.succeed) {
-        items.value = []
         dialogFormVisible.value = false
         DoGetAllCometics()
     }
+}
+
+const doEidtCometic = async () => {
+    const res = await updateCometic(editForm.value)
+    if (res.succeed) {
+        dialogFormVisible2.value = false
+        DoGetAllCometics()
+    }
+}
+const handleCurrentChange = (val: number) => {
+    console.log(`current page: ${val}`)
+    query.value.currentPage = val
+    DoGetAllCometics()
+}
+const handleChange = (value: any) => {
+    query.value.tagIdList = value.map((item: any) => {
+        return JSON.parse(item[1])
+    })
+
 }
 
 DoGetAllCometics()
@@ -427,7 +450,9 @@ DoGetAllTags()
 <style lang='scss' scoped>
 .container {
     width: 100%;
-    height: calc(100vh - 60px);
+    position: relative;
+    // min-height: calc(100vh - 100px);
+    // overflow: hidden;
 
     .btn-group {
         display: flex;
@@ -483,9 +508,14 @@ DoGetAllTags()
         border: 1px solid rgb(220, 223, 230);
         border-radius: 10px;
         margin-bottom: 10px;
+    }
 
-
-
+    .pag {
+        width: 100%;
+        // bottom: 50px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
     }
 }
 </style>

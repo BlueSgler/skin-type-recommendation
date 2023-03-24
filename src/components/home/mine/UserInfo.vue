@@ -3,8 +3,8 @@
         <div class="content">
             <div class="avater">
                 <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
-                    :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="header">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                    :on-success="handleAvatarSuccess" :headers="header">
+                    <img v-if="imageUrl" :src="imageUrl" />
                     <el-icon v-else class="avatar-uploader-icon" size="50">
                         <upload-filled />
                     </el-icon>
@@ -69,7 +69,7 @@ import { ElMessage } from 'element-plus';
 import type { UploadProps } from 'element-plus'
 const store = useStore();
 let { userInfo } = storeToRefs(store);
-const url=ref('')
+const url = ref('')
 const imageUrl = ref('')
 imageUrl.value = userInfo.value.avatar
 const token = sessionStorage.getItem('token')
@@ -91,15 +91,16 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
 
 }
 const doUpdateAvatar = async () => {
-    const res=await updateAvatar({url:url.value})
+    const res = await updateAvatar({ url: url.value })
+    DogetUserInfo()
 }
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-    if (rawFile.type !== 'image/png') {
-        ElMessage.error('Avatar picture must be JPG format!')
-        return false
-    }
-    return true
-}
+// const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+//     if (rawFile.type !== 'image/png' || rawFile.type !== 'image/j') {
+//         ElMessage.error('Avatar picture must be JPG format!')
+//         return false
+//     }
+//     return true
+// }
 const dialogFormVisible = ref(false)
 const nameForm = ref({
     name: userInfo.value.nickname
@@ -168,6 +169,10 @@ const goto = () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
+                img {
+                    width: 100%;
+                }
             }
         }
 

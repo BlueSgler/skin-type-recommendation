@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang='ts'>
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { getAllCometics } from '@/apis/cosmetic'
 import { ElMessage } from 'element-plus';
 import router from '@/router';
@@ -63,25 +63,23 @@ const debounce = (func: Function, delay: number) => {
     };
 };
 const debouncedDoGetAllCometics = debounce(doGetAllCometics, 500);
-
-window.onscroll = function (ev) {
-    console.log(window.innerHeight);
-    console.log(window.scrollY);
-
-
+const scroll = (ev: Event) => {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 20)) {
-        console.log('here');
 
         query.value.currentPage = query.value.currentPage + 1
 
         debouncedDoGetAllCometics();
     }
-};
+}
+window.addEventListener('scroll', scroll)
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', scroll)
+})
 
 doGetAllCometics()
 </script>
 
-优化代码，添加防抖功能
 <style lang='scss' scoped>
 .container {
     display: flex;
