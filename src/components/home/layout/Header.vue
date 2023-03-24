@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
+    <div class="container" @click="goto">
         <div class="left-box">
-            <img src="../../../assets/vue.svg" alt="">
+            <span>首页</span>
         </div>
         <div class="right-box">
             <div class="avatar">
@@ -28,6 +28,9 @@ const logout = () => {
     token.value = ''
 
 }
+const goto = () => {
+    router.push('/home')
+}
 </script>
 
 <style lang='scss' scoped>
@@ -35,9 +38,13 @@ const logout = () => {
     line-height: 60px;
     display: flex;
     justify-content: space-between;
+    color: #fff;
+    font-weight: bold;
+
 
     .left-box {
-        font-size: 22px;
+        // font-size: 22px;
+        cursor: pointer;
     }
 
     .right-box {
@@ -48,6 +55,7 @@ const logout = () => {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            border: 2px solid #fff;
             overflow: hidden;
             cursor: pointer;
 

@@ -27,7 +27,7 @@ const getUserInfo = () => {
     })
 }
 
-const updateNick = (name:string) => {
+const updateNick = (name: string) => {
     return instance({
         method: 'PATCH',
         url: `/user/nickname/${name}`
@@ -39,19 +39,14 @@ const updatePassword = (password: string) => {
         url: `/user/password/?password=${password}`
     })
 }
-export { getUsers, addUser, deleteUser, getUserInfo, updateNick, updatePassword };
 
-// // src/api/article.ts
-// import instance from '../utils/api'
+const score = (data: object) => {
+    return instance({
+        method: 'POST',
+        url: '/user/score',
+        data
+    })
+}
+export { getUsers, addUser, deleteUser, getUserInfo, updateNick, updatePassword, score };
 
-// export function getArticleList() {
-//     return instance.get('/article/list')
-// }
 
-// export function getArticle(id: number) {
-//     return instance.get(`/article/${id}`)
-// }
-
-// export function createArticle(data: any) {
-//     return instance.post('/article', data)
-// }

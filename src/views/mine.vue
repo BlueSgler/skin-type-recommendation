@@ -13,7 +13,9 @@
         </div>
       </div>
       <div class="btn-box">
+        <el-button type="primary" @click="goto">重新选择偏好</el-button>
         <el-button type="danger">注销账号</el-button>
+
       </div>
     </div>
     <el-dialog v-model="dialogFormVisible" title="编辑昵称">
@@ -95,7 +97,9 @@ const DogetUserInfo = async () => {
     ElMessage.error(res.message)
   }
 }
-
+const goto = () => {
+  router.push('/chooseTags')
+}
 </script>
 
 <style lang='scss' scoped>

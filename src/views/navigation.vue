@@ -9,25 +9,41 @@
                     <span class="index">Q{{ item.id + 1 }}.</span>
                     <span class="content">{{ item.question }}</span>
                 </div>
-                <el-radio-group class="answer-list" :v-model="() => {
-                    return (answers.find((t) => t.id == item.id
-                    ))!.label
-                }">
-                    <el-radio :label="subItem.label" size="large" class="answer" v-for="subItem in item.answer"
-                        :key="subItem.label">{{ subItem.answer }}</el-radio>
-                </el-radio-group>
+                <div :id="`group${item.id}`" class="answer-list">
+                    <div class="answer" v-for="subItem in item.answer" :key="subItem.label">
+                        <Radio v-model="answers[item.id].label" :label="subItem.answer" :value="subItem.label" />
+                    </div>
+                </div>
+            </div>
+            <div class="btn-box">
+                <el-button type="primary" @click="getScore">填写完成，获取结果</el-button>
             </div>
         </el-card>
+        <el-dialog v-model="dialogVisible" title="测试结果" width="30%">
+            <span>肤质类型：{{ result.score }}</span>
+            <!-- <div>{{ result.tag.name }}</div> -->
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="goto">
+                        前往上一页
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script setup lang='ts'>
-import { ref } from 'vue';
-const radio1 = ref('1')
-const answers = ref([{
-    id: 0,
-    label: ''
-}])
+
+import { Ref, ref } from 'vue';
+import Radio from '@/components/home/layout/Radio.vue';
+import { score } from '@/apis/user'
+import router from '@/router';
+
+const result = ref()
+const dialogVisible = ref(false)
+const answers = ref<{ id: number, label: string }[]>([])
 const questions = ref([
     {
         id: 0,
@@ -265,6 +281,24 @@ const questions = ref([
             },
         ]
     }])
+questions.value.forEach((item) => {
+    answers.value.push({ id: item.id, label: '' })
+})
+
+const getScore = async () => {
+    console.log(answers.value);
+
+    const res = await score({ answers: answers.value })
+    if (res.succeed) {
+        console.log(res);
+        result.value = res.result
+        console.log(result.value);
+        dialogVisible.value = true
+    }
+}
+const goto = () => {
+    router.push('/chooseTags')
+}
 </script>
 
 <style lang='scss' scoped>
@@ -311,12 +345,28 @@ const questions = ref([
                 flex-wrap: wrap;
 
                 .answer {
+                    display: flex;
                     width: 50%;
                     margin: 10px 0;
+
+                    .img-box {
+                        width: 16px;
+                        margin-right: 10px;
+
+                        img {
+                            width: 100%;
+                        }
+                    }
                 }
 
             }
         }
+    }
+
+    .btn-box {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
     }
 }
 </style>
