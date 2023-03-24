@@ -20,13 +20,13 @@
             </div>
         </el-card>
         <el-dialog v-model="dialogVisible" title="测试结果" width="30%">
-            <span>肤质类型：{{ result.score }}</span>
+            <span>肤质类型：{{ result.tag.name }}</span>
             <!-- <div>{{ result.tag.name }}</div> -->
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button @click="dialogVisible = false">重新测试</el-button>
                     <el-button type="primary" @click="goto">
-                        前往上一页
+                        返回上一页
                     </el-button>
                 </span>
             </template>

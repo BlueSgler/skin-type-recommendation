@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="left-box">
+        <div class="left-box" @click="goto">
             美妆推荐后台管理
         </div>
         <div class="right-box">
@@ -25,6 +25,9 @@ const logout = () => {
     token.value = ''
 
 }
+const goto = () => {
+    router.push('/home')
+}
 </script>
 
 <style lang='scss' scoped>
@@ -35,6 +38,7 @@ const logout = () => {
 
     .left-box {
         font-size: 22px;
+        cursor: pointer;
     }
 
     .right-box {

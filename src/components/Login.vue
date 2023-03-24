@@ -135,7 +135,7 @@ const doLogin = () => {
           router.push('/home')
         } else {
           localStorage.setItem('first', '1')
-          router.push('/navigation')
+          router.push('/chooseTags')
 
         }
       }

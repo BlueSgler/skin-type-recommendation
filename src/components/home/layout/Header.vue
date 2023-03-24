@@ -1,7 +1,8 @@
 <template>
-    <div class="container" @click="goto">
+    <div class="container">
         <div class="left-box">
-            <span>首页</span>
+            <span class="common" @click="goto('/home')">首页</span>
+            <span class="common" v-if="userInfo.identity === 1" @click="goto('/admin')">管理</span>
         </div>
         <div class="right-box">
             <div class="avatar">
@@ -28,8 +29,8 @@ const logout = () => {
     token.value = ''
 
 }
-const goto = () => {
-    router.push('/home')
+const goto = (url: string) => {
+    router.push(url)
 }
 </script>
 
@@ -45,6 +46,10 @@ const goto = () => {
     .left-box {
         // font-size: 22px;
         cursor: pointer;
+
+        .common {
+            margin-right: 10px;
+        }
     }
 
     .right-box {

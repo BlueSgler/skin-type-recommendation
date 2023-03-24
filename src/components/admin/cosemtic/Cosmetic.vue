@@ -58,7 +58,7 @@
                     <el-input v-model="addForm.description" autocomplete="off" />
                 </el-form-item>
                 <el-form-item label="封面" label-width="140px">
-                    <div class="post-img" @click="selectImg">
+                    <div class="post-img">
                         <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
                             :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="header">
                             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
@@ -292,9 +292,7 @@ const active = (id: number) => {
     console.log(selectedIds.value);
     addForm.value.tagIdList = selectedIds.value
 }
-const selectImg = () => {
 
-}
 interface Cometic {
     id: number
     name: string

@@ -65,5 +65,6 @@ declare module '@vue/runtime-core' {
     Tag: typeof import('./src/components/admin/tag/Tag.vue')['default']
     Title: typeof import('./src/components/navigation/Title.vue')['default']
     User: typeof import('./src/components/admin/user/User.vue')['default']
+    UserInfo: typeof import('./src/components/home/mine/UserInfo.vue')['default']
   }
 }

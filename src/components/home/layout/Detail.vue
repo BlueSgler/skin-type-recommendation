@@ -8,6 +8,7 @@
                 <div class="common title">{{ data.name }}</div>
                 <div class="common">{{ data.description }}</div>
                 <div class="common">{{ data.price }}RMB</div>
+                <div class="common">{{ data.brand }}</div>
                 <div class="common ">
                     <el-image class="img2" :src="data.cover" fit="contain" />
                 </div>
@@ -32,6 +33,7 @@ const data = ref({
     description: '',
     originalUrl: '',
     sourceWarehouse: '',
+    brand:'',
     tagVOList: [{ name: '' }]
 })
 data.value = JSON.parse(sessionStorage.getItem('cometic') as string)

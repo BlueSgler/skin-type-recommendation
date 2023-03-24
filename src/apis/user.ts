@@ -40,6 +40,13 @@ const updatePassword = (password: string) => {
     })
 }
 
+const updateAvatar = (data: object) => {
+    return instance({
+        method: 'PATCH',
+        url: '/user/avatar',
+        data
+    })
+}
 const score = (data: object) => {
     return instance({
         method: 'POST',
@@ -47,6 +54,6 @@ const score = (data: object) => {
         data
     })
 }
-export { getUsers, addUser, deleteUser, getUserInfo, updateNick, updatePassword, score };
+export { getUsers, addUser, deleteUser, getUserInfo, updateNick, updatePassword, updateAvatar, score };
 
 
