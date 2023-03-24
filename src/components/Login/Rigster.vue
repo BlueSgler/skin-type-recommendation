@@ -62,8 +62,8 @@ import { ref, reactive, onMounted, Ref } from 'vue'
 import { Lock, User, Message } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ElForm } from 'element-plus';
-import { swicher } from '../utils/mySwitch'
-import { getImageCode, sentCode, register } from '../apis/login'
+import { swicher } from '../../utils/mySwitch'
+import { getImageCode, sentCode, register } from '../../apis/login'
 const randomString = ref('')
 const imageCode = ref<string>('')
 const generateRandomString = (length: number) => {

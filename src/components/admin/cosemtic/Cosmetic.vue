@@ -9,7 +9,6 @@
             <el-table-column type="selection" width="55" />
             <el-table-column label="ID" prop="id" />
             <el-table-column label="名称" prop="name" />
-            <!-- <el-table-column label="描述" prop="description" /> -->
             <el-table-column label="品牌" prop="brand" />
             <el-table-column label="价格" prop="price" />
             <el-table-column label="标签" prop="tagVOList" width="200">
@@ -82,7 +81,7 @@
                 </el-form-item>
                 <el-form-item label="标签" label-width="140px">
                     <div class="item" v-for="item in items" :key="item.id">
-                        <div class="title">主要成分</div>
+                        <div class="title">{{ item.name }}</div>
                         <div class="options">
                             <span :class="[selectedIds.includes(subItem.id) ? 'active' : '', , 'option']"
                                 v-for="subItem in item.children" :key="subItem.id"
@@ -109,7 +108,7 @@
                     <el-input v-model="editForm.description" autocomplete="off" />
                 </el-form-item>
                 <el-form-item label="封面" label-width="140px">
-                    <div class="post-img" @click="selectImg">
+                    <div class="post-img">
                         <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
                             :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="header">
                             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
@@ -132,19 +131,19 @@
                     <el-input v-model="editForm.sourceWarehouse" autocomplete="off" />
                 </el-form-item>
                 <el-form-item label="标签" label-width="140px">
-                    <div class="item" v-for="item in items2" :key="item.id">
-                        <div class="title">主要成分</div>
+                    <div class="item" v-for="item in items">
+                        <div class="title">{{ item.name }}</div>
                         <div class="options">
-                            <span :class="[selectedIds.includes(subItem.id) ? 'active' : '', , 'option']"
-                                v-for="subItem in item.children" :key="subItem.id"
+                            <span class="option" v-for="subItem in item.children" :key="subItem.id"
                                 @click="active(subItem.id)">{{ subItem.name }}</span>
                         </div>
                     </div>
+
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取消</el-button>
+                    <el-button @click="dialogFormVisible2 = false">取消</el-button>
                     <el-button type="primary" @click="doAddCometic">
                         保存
                     </el-button>
@@ -269,18 +268,10 @@ const DoGetAllTags = async () => {
             item.children = res.result
         })
         console.log(items.value);
-        // options.value = items.value.map((item) =>{
-        //     return {
-        //         value: item.id,
-        //         label: item.name,
-        //         children:item.children
-        //     }
-        // })
-
-
     }
 }
 const selectedIds = ref<number[]>([])
+const selectedIds2 = ref<number[]>([])
 const active = (id: number) => {
     if (selectedIds.value.includes(id)) {
         selectedIds.value = selectedIds.value.filter(item => {
@@ -292,6 +283,19 @@ const active = (id: number) => {
     console.log(selectedIds.value);
     addForm.value.tagIdList = selectedIds.value
 }
+const active2 = (id: number) => {
+    if (selectedIds2.value.includes(id)) {
+        selectedIds2.value = selectedIds2.value.filter(item => {
+            return item != id
+        })
+    } else {
+        selectedIds2.value.push(id)
+    }
+    console.log(selectedIds2.value);
+    editForm.value.tagIdList = selectedIds2.value
+}
+
+
 
 interface Cometic {
     id: number
@@ -315,7 +319,7 @@ const dialogFormVisible2 = ref(false)
 const tableData = ref<Cometic[]>([])
 
 const handleEdit = (row: any) => {
-    dialogFormVisible2.value = true
+
     editForm.value.price = row.price
     editForm.value.name = row.name
     editForm.value.description = row.description
@@ -324,8 +328,30 @@ const handleEdit = (row: any) => {
     editForm.value.brand = row.brand
     editForm.value.tagIdList = row.tagIdList
     imageUrl.value = row.cover
-    items2.value = row.tagIdList
+    // items.value=row.tagVOList
+    console.log(row.tagVOList, 'ids');
+
+
+    items2.value = row.tagVOList
+    let b = rootList.value
+    
+    for (let i =0; i < row.tagVOList.length; i++) {
+        if (row.tagVOList[i].parentId === 1) {
+            for (let j = 0; j < b.length; j++){
+                
+            }
+        }
+    }
+    selectedIds2.value = items2.value.map(element => {
+
+
+        return element.id
+    });
+    console.log(selectedIds2.value, 'aa');
+
+
     console.log(editForm.value);
+    dialogFormVisible2.value = true
 
 }
 const multipleSelection = ref<number[]>([])
@@ -389,6 +415,7 @@ const addHandler = () => {
 const doAddCometic = async () => {
     const res = await addCometic(addForm.value)
     if (res.succeed) {
+        items.value = []
         dialogFormVisible.value = false
         DoGetAllCometics()
     }

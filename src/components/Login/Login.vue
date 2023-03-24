@@ -45,12 +45,12 @@ import { ref, reactive, onMounted, Ref } from 'vue'
 import { Lock, User } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ElForm } from 'element-plus';
-import { swicher } from '../utils/mySwitch'
-import { getImageCode, login, sentCode } from '../apis/login'
-import { getUserInfo } from '../apis/user'
+import { swicher } from '../../utils/mySwitch'
+import { getImageCode, login, sentCode } from '../../apis/login'
+import { getUserInfo } from '../../apis/user'
 import { storeToRefs } from 'pinia'
-import { useStore } from '../stores/user'
-import router from '../router';
+import { useStore } from '../../stores/user'
+import router from '../../router';
 const store = useStore();
 let { token, userInfo } = storeToRefs(store);
 const imageCode = ref('')

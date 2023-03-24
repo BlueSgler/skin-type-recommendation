@@ -20,8 +20,8 @@
 <script setup lang='ts'>
 
 // import { ref } from 'vue';
-import Login from '../components/Login.vue';
-import Rigster from '../components/Rigster.vue';
+import Login from '../components/Login/Login.vue';
+import Rigster from '../components/Login/Rigster.vue';
 import { login, getImageCode } from '../apis/login';
 
 // const doLogin = async () => {
