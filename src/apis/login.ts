@@ -1,6 +1,10 @@
-// src/api/user.ts
 import instance from './config';
 
+/**
+ * 登录
+ * @param data 登录表单数据
+ * @returns 
+ */
 const login = (data: object) => {
     return instance({
         method: 'POST',
@@ -8,6 +12,12 @@ const login = (data: object) => {
         data: data
     })
 };
+
+/**
+ * 获取图片验证码
+ * @param key 随机字符串
+ * @returns 
+ */
 const getImageCode = (key: string) => {
     return instance({
         method: "GET",
@@ -16,6 +26,13 @@ const getImageCode = (key: string) => {
     })
 }
 
+/**
+ * 获取邮箱验证码
+ * @param key 随机字符串，和图片二维码的key保持一致
+ * @param code 图片验证码
+ * @param username 邮箱
+ * @returns 
+ */
 const sentCode = (key: string, code: string, username: string) => {
     const queryParams = `?key=${key}&code=${code}&username=${username}`;
     return instance({
@@ -24,6 +41,11 @@ const sentCode = (key: string, code: string, username: string) => {
     });
 };
 
+/**
+ * 注册
+ * @param data 注册表单数据
+ * @returns 
+ */
 const register = (data: object) => {
     return instance({
         method: 'POST',
@@ -35,17 +57,3 @@ const register = (data: object) => {
 
 export { login, getImageCode, sentCode, register };
 
-// // src/api/article.ts
-// import instance from '../utils/api'
-
-// export function getArticleList() {
-//     return instance.get('/article/list')
-// }
-
-// export function getArticle(id: number) {
-//     return instance.get(`/article/${id}`)
-// }
-
-// export function createArticle(data: any) {
-//     return instance.post('/article', data)
-// }

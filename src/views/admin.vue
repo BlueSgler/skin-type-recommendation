@@ -24,8 +24,6 @@ import Header from '../components/admin/layout/Header.vue'
 }
 
 .el-container {
-
-
     .el-aside {
         height: calc(100vh - 60px);
     }

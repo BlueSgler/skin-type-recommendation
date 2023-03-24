@@ -14,15 +14,11 @@ instance.interceptors.request.use(
         if (token) {
 
             config.headers['Authorization'] = 'Bearer ' + token
-            // window.sessionStorage.getItem('token')
         }
-        console.log(config);
 
         return config
     },
     error => {
-
-
         router.push('/login')
         return Promise.reject(error)
     }

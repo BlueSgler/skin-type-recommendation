@@ -64,7 +64,7 @@
                 <el-form-item label="封面" label-width="140px">
                     <div class="post-img">
                         <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
-                            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="header">
+                            :on-success="handleAvatarSuccess" :headers="header">
                             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
                             <el-icon v-else class="avatar-uploader-icon" size="50">
                                 <upload-filled />
@@ -115,7 +115,7 @@
                 <el-form-item label="封面" label-width="140px">
                     <div class="post-img">
                         <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
-                            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :headers="header">
+                            :on-success="handleAvatarSuccess" :headers="header">
                             <img v-if="editForm.cover" :src="editForm.cover" class="avatar" />
                             <el-icon v-else class="avatar-uploader-icon" size="50">
                                 <upload-filled />
@@ -157,34 +157,43 @@
                 </span>
             </template>
         </el-dialog>
-
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getAllCometics, getCometics, getCometicsDeTail, addCometic, updateCometic, deleteCometic, deleteArray, preference, search } from '../../../apis/cosmetic'
-import { getAllRootTags, getTags } from '../../../apis/tag';
-import { Search, InfoFilled, Edit } from '@element-plus/icons-vue'
-import Add from '../../common/Add.vue'
-import Delete from '../../common/Delete.vue'
+import { getAllCometics, addCometic, updateCometic, deleteCometic, deleteArray, search } from '@/apis/cosmetic'
+import { getAllRootTags, getTags } from '@/apis/tag';
+import { InfoFilled } from '@element-plus/icons-vue'
+import Add from '@/components/common/Add.vue'
+import Delete from '@/components/common/Delete.vue'
 import { ElMessage } from 'element-plus';
 import { UploadFilled } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
+
 const props = { multiple: true }
 
+/**
+ * 获取化妆品的分页数据
+ */
 const query = ref({
     pageSize: 10,
     currentPage: 1,
     tagIdList: []
 
 })
+
+//化妆品总共的条数
 const total = ref(0)
+
+//级联选择器配置项类型
 interface optionsType {
     value: string,
     label: string,
     children?: optionsType[]
 }
+
+//级联选择器配置项
 const options = ref<optionsType[]>([])
 
 const imageUrl = ref('')
@@ -192,6 +201,12 @@ const token = sessionStorage.getItem('token')
 const header = {
     Authorization: 'Bearer ' + token
 }
+
+/**
+ * 上传成功回调函数
+ * @param response 响应数据
+ * @param uploadFile 上传文件
+ */
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
     response,
     uploadFile
@@ -206,24 +221,24 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
 
 }
 
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-    if (rawFile.type !== 'image/png') {
-        ElMessage.error('Avatar picture must be JPG format!')
-        return false
-    }
-    return true
-}
+/**
+ * 打开官网
+ * @param url 官方售卖地址
+ */
 const gotoUrl = (url: string) => {
     window.open(url)
 }
+
+//标签类型
 interface Tag {
     id: number
     name: string
-    // tagVOList: Array
     parentId: number
     isNeeded: number
     createTime: string
 }
+
+//标签树状结构类型
 type Item = {
     children?: Item[],
     id: number
@@ -232,8 +247,11 @@ type Item = {
     isNeeded: number
     createTime: string
 }
+
 const items = ref<Item[]>([])
-interface addFormType {
+
+//表单类型
+interface FormType {
     id?: number
     cover: string
     price: number
@@ -244,17 +262,21 @@ interface addFormType {
     brand: string,
     tagIdList: number[]
 }
-const addForm = ref<addFormType>({
+
+//添加化妆品表单
+const addForm = ref<FormType>({
     cover: '',
     price: 0,
-    name: 'test',
-    description: 'test',
-    originalUrl: 'test',
-    sourceWarehouse: 'test',
-    brand: 'test',
+    name: '',
+    description: '',
+    originalUrl: '',
+    sourceWarehouse: '',
+    brand: '',
     tagIdList: []
 })
-const editForm = ref<addFormType>({
+
+//编辑化妆品表单
+const editForm = ref<FormType>({
     id: undefined,
     cover: '',
     price: 0,
@@ -266,9 +288,12 @@ const editForm = ref<addFormType>({
     tagIdList: []
 })
 const rootList = ref<Tag[]>([])
+
+/**
+ * 获取所有根标签并对数据进行树状结构处理
+ */
 const DoGetAllTags = async () => {
     const res = await getAllRootTags(false)
-
     if (res.succeed) {
         rootList.value = res.result
         items.value = rootList.value.map((item) => {
@@ -288,7 +313,6 @@ const DoGetAllTags = async () => {
                     label: child.name
                 }
             })
-
             return {
                 value: String(ele.id),
                 label: ele.name,
@@ -298,6 +322,11 @@ const DoGetAllTags = async () => {
     }
 }
 const selectedIds = ref<number[]>([])
+
+/**
+ * 激活添加表单标签
+ * @param id 标签id
+ */
 const active = (id: number) => {
     if (selectedIds.value.includes(id)) {
         selectedIds.value = selectedIds.value.filter(item => {
@@ -309,6 +338,11 @@ const active = (id: number) => {
     console.log(selectedIds.value);
     addForm.value.tagIdList = selectedIds.value
 }
+
+/**
+ * 激活编辑表单标签
+ * @param id 标签id
+ */
 const active2 = (id: number) => {
     if (editForm.value.tagIdList.includes(id)) {
         editForm.value.tagIdList = editForm.value.tagIdList.filter(item => {
@@ -319,11 +353,10 @@ const active2 = (id: number) => {
     }
 }
 
-
+//化妆品类型
 interface Cometic {
     id: number
     name: string
-    // tagVOList: Array
     description: string
     brand: string
     price: string
@@ -335,14 +368,19 @@ interface Cometic {
     createTime: string
     updateTime: string
 }
+
+//对话框是否显示
 const dialogFormVisible = ref(false)
 const dialogFormVisible2 = ref(false)
 
-
+//化妆品数据
 const tableData = ref<Cometic[]>([])
 
+/**
+ * 点击编辑按钮对行数据进行预处理
+ * @param row 行数据
+ */
 const handleEdit = (row: any) => {
-
     editForm.value.price = row.price
     editForm.value.name = row.name
     editForm.value.description = row.description
@@ -355,19 +393,22 @@ const handleEdit = (row: any) => {
         return tag.id
     })
     imageUrl.value = row.cover
-
     dialogFormVisible2.value = true
 
 }
+
 const multipleSelection = ref<number[]>([])
+
+/**
+ * 多选
+ * @param val 
+ */
 const handleSelectionChange = async (val: Cometic[]) => {
-    console.log(val, 'val');
     multipleSelection.value = []
     val.forEach(item => {
         if (multipleSelection.value.indexOf(item.id) == -1) {
             multipleSelection.value.push(item.id)
         }
-
     })
 }
 
@@ -380,9 +421,10 @@ const deleteHandler = async () => {
     }
 }
 
-
+/**
+ * 获取所有化妆品，根据偏好优先推荐
+ */
 const DoGetAllCometics = async () => {
-    console.log(query.value, 'jfeijfie');
 
     const res = await getAllCometics(query.value, false)
     if (res.succeed) {
@@ -391,10 +433,11 @@ const DoGetAllCometics = async () => {
     } else {
         ElMessage.error(res.message)
     }
-
-
 }
 
+/**
+ * 根据标签数组查询化妆品
+ */
 const DoSearch = async () => {
     const res = await search(query.value)
     if (res.succeed) {
@@ -404,19 +447,30 @@ const DoSearch = async () => {
         ElMessage.error(res.message)
     }
 }
+
+/**
+ * 根据id删除化妆品
+ * @param index 
+ * @param row 
+ */
 const handleDelete = async (index: number, row: Tag) => {
-    console.log(index, row)
     const res = await deleteCometic(JSON.stringify(row.id))
     if (res.succeed) {
         DoGetAllCometics()
     }
 }
 
+/**
+ * 打开添加化妆品的对话框
+ */
 const addHandler = () => {
     dialogFormVisible.value = !dialogFormVisible.value
 
 }
 
+/**
+ * 添加化妆品
+ */
 const doAddCometic = async () => {
     const res = await addCometic(addForm.value)
     if (res.succeed) {
@@ -425,6 +479,9 @@ const doAddCometic = async () => {
     }
 }
 
+/**
+ * 编辑化妆品
+ */
 const doEidtCometic = async () => {
     const res = await updateCometic(editForm.value)
     if (res.succeed) {
@@ -432,11 +489,20 @@ const doEidtCometic = async () => {
         DoGetAllCometics()
     }
 }
+
+/**
+ * 改变当前页数重写获取化妆品列表
+ * @param val 
+ */
 const handleCurrentChange = (val: number) => {
-    console.log(`current page: ${val}`)
     query.value.currentPage = val
     DoGetAllCometics()
 }
+
+/**
+ * 点击级联选择器
+ * @param value 
+ */
 const handleChange = (value: any) => {
     query.value.tagIdList = value.map((item: any) => {
         return JSON.parse(item[1])
@@ -451,8 +517,6 @@ DoGetAllTags()
 .container {
     width: 100%;
     position: relative;
-    // min-height: calc(100vh - 100px);
-    // overflow: hidden;
 
     .btn-group {
         display: flex;
@@ -512,7 +576,6 @@ DoGetAllTags()
 
     .pag {
         width: 100%;
-        // bottom: 50px;
         margin-top: 20px;
         display: flex;
         justify-content: center;
