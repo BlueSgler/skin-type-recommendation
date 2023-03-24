@@ -1,3 +1,4 @@
+import { ElMessage } from 'element-plus';
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { RouteRecordRaw, Router } from 'vue-router';
 
@@ -33,6 +34,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/login',
+        name: '登录',
         component: () => import('../views/login.vue'),
     },
     {
@@ -55,11 +57,6 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../components/admin/tag/Tag.vue'),
                 name: '标签'
             },
-            // {
-            //     path: 'lala',
-            //     component: () => import('../components/admin/tag/AddTag.vue'),
-            //     name: '添加标签'
-            // },
             {
                 path: 'user',
                 component: () => import('../components/admin/user/User.vue'),
@@ -76,20 +73,21 @@ const router = createRouter({
 })
 
 // 前置路由守卫
-// router.beforeEach((to, from, next) => {
-//     console.log(to, from);
-//     if (to.name === '主页' || to.name === "设备管理" || to.name === '修理记录' || to.name === "报废记录" || to.name === "购买申请" || to.name === "申请表") {
-//         if (window.sessionStorage.getItem("token")) {
-//             next()
-//         }
-//         else {
-//             confirm("请先登录！")
-//         }
-//     }
-//     else {
-//         next()
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    console.log(to, from);
+    if (to.name !== '登录') {
+        if (window.sessionStorage.getItem("token")) {
+            next()
+        }
+        else {
+            ElMessage.error('请先登录！')
+            router.push('/login')
+        }
+    }
+    else {
+        next()
+    }
+})
 
 
 export default router

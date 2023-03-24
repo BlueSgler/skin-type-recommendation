@@ -18,82 +18,15 @@
 </template>
 
 <script setup lang='ts'>
-
-// import { ref } from 'vue';
 import Login from '../components/Login/Login.vue';
 import Rigster from '../components/Login/Rigster.vue';
-import { login, getImageCode } from '../apis/login';
-
-// const doLogin = async () => {
-
-//     try {
-//         const res = await login('3032964348@qq.com', '123456')
-//         console.log(res.data)
-//     } catch (error) {
-//         console.error(error)
-//     }
-// }
-import { Lock, User } from '@element-plus/icons-vue'
-// import mySwitch from '@/utils/mySwitch'
-import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
-
-// import { onMounted } from '@vue/runtime-core'
-const loginForm = reactive({
-  username: '',
-  password: ''
-})
-const registerForm = reactive({
-  username: '',
-  password: '',
-  confirmPassword: ''
-})
-
-const loginFormRef = ref('')
-const registerFormRef = ref('')
-const rules = reactive({
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 5, message: '长度应该在3~5个字符之间', trigger: 'blur' },
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '长度应该大于6', trigger: 'blur' },
-  ],
-  confirmPassword: [
-    { required: true, message: '请输入确认密码', trigger: 'blur' },
-    { min: 6, message: '长度应该大于6', trigger: 'blur' },
-  ],
-})
-
-const router = useRouter()
-
-
-
-const register = () => {
-  // registerFormRef.value.validate((valid) => {
-  //     if (valid) {
-  //         api.registerApi(registerForm).then(res => {
-  //             if (res.status === 0) {
-  //                 ElMessage.success(res.message)
-  //             }
-  //         }).catch(error => {
-  //             console.log(error);
-  //         })
-  //     } else {
-  //         return
-  //     }
-  // })
-}
-// doGetImgeCode()
-// doLogin()
 
 </script>
 
 <style lang='scss' scoped>
 .bigBox {
   /* 溢出隐藏 */
+  min-width: 600px;
   height: 100vh;
   overflow-x: hidden;
   display: flex;

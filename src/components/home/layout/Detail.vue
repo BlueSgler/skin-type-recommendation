@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <div class="box">
-            <!-- {{ data.name }} -->
             <el-image class="img" :src="data.cover" fit="fill">
             </el-image>
             <div class="info-box">
@@ -33,7 +32,7 @@ const data = ref({
     description: '',
     originalUrl: '',
     sourceWarehouse: '',
-    brand:'',
+    brand: '',
     tagVOList: [{ name: '' }]
 })
 data.value = JSON.parse(sessionStorage.getItem('cometic') as string)
@@ -50,11 +49,10 @@ const goto = () => {
 
     .box {
         height: calc(100% - 60px);
-        padding: 100px 150px;
+        padding: 100px 120px;
         display: flex;
 
         .img {
-            width: 50%;
             min-width: 600px;
             height: 40%;
             min-height: 400px;
@@ -65,7 +63,7 @@ const goto = () => {
             flex-direction: column;
             width: 50%;
             min-width: 600px;
-            padding: 50px 30px;
+            padding: 0 30px;
 
             .common {
                 margin-bottom: 30px;
@@ -84,6 +82,7 @@ const goto = () => {
 
             .tags {
                 display: flex;
+                flex-wrap: wrap;
 
                 .tag {
                     padding: 5px 10px;
@@ -92,6 +91,7 @@ const goto = () => {
                     background-color: #fef0f0;
                     color: #f8816c;
                     border: 1px solid #fab6b6;
+                    margin-bottom: 5px;
                 }
             }
         }

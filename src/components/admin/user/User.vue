@@ -47,7 +47,6 @@ import { ElMessage } from 'element-plus';
 interface User {
   id: number
   username: string
-  // tagVOList: Array
   nickname: string
   avatar: string
   identity: boolean
@@ -59,7 +58,10 @@ interface User {
 const tableData = ref<User[]>([])
 const DoGetUsers = async () => {
   const res = await getUsers('1', '100')
+  console.log(res, '===>');
   if (res.succeed) {
+
+
     res.records.forEach((item: any) => {
       if (item.identity === 1) {
         item.identity = true

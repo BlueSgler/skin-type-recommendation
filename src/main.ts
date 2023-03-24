@@ -10,5 +10,4 @@ const app = createApp(App)
 
 app.use(pinia).use(router).use(store)
 app.mount('#app')
-console.log(process.env.VITE_API_BASE_URL, 'main.ts');
 

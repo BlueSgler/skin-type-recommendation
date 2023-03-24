@@ -28,11 +28,6 @@ import Detail from '@/components/home/layout/Detail.vue'
     .el-header {
         background-color: #f9c8c4;
     }
-
-    // .el-container {
-    //     min-width: 100vh;
-    //     background-color: pink;
-    // }
     .footer {
         position: absolute;
 

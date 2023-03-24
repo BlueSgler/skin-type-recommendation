@@ -21,7 +21,6 @@
         </el-card>
         <el-dialog v-model="dialogVisible" title="测试结果" width="30%">
             <span>肤质类型：{{ result.tag.name }}</span>
-            <!-- <div>{{ result.tag.name }}</div> -->
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogVisible = false">重新测试</el-button>

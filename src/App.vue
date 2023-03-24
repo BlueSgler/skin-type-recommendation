@@ -3,7 +3,9 @@ console.log(import.meta.env, '======>env')
 </script>
 
 <template>
-  <router-view></router-view>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <style>

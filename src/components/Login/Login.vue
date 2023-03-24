@@ -50,14 +50,14 @@ import { getImageCode, login, sentCode } from '../../apis/login'
 import { getUserInfo } from '../../apis/user'
 import { storeToRefs } from 'pinia'
 import { useStore } from '../../stores/user'
-import router from '../../router';
+import router from '@/router';
 const store = useStore();
 let { token, userInfo } = storeToRefs(store);
 const imageCode = ref('')
 const randomString = ref('')
 const loginForm = reactive({
   username: '',
-  password: '123456',
+  password: '',
   verifyCode: '',
   code: ''
 })
@@ -93,12 +93,10 @@ const generateRandomString = (length: number) => {
   return result;
 }
 const doGetImgeCode = async () => {
-  console.log('lalal');
 
   randomString.value = generateRandomString(5)
   try {
     const res = await getImageCode(randomString.value)
-    console.log(res, 'here====================>');
     if (res) {
       const blob = new Blob([res as any], { type: 'image/png' })
       console.log(blob.type, '=>type');
@@ -113,7 +111,7 @@ const doGetImgeCode = async () => {
   }
 }
 const doSentCode = async () => {
-  const res = await sentCode(randomString.value, loginForm.code, loginForm.username, '发送邮箱验证码，请注意查收!')
+  const res = await sentCode(randomString.value, loginForm.code, loginForm.username)
   console.log(res);
 
 }
@@ -124,7 +122,6 @@ const doLogin = () => {
       const newLoginForm: any = { ...loginForm }
       delete newLoginForm.code
       const res = await login(newLoginForm)
-      console.log(res, '=====>here')
 
       if (res.succeed) {
 
@@ -166,8 +163,8 @@ onMounted(() => {
 }
 
 /* 登录和注册盒子 */
-.login-form,
-.register-form {
+.login-form {
+  min-width: 400px;
   flex: 1;
   height: 100%;
 }

@@ -29,12 +29,13 @@ instance.interceptors.request.use(
 )
 
 type Response = {
-    result: any,
+    result?: any,
     message: string,
-    succeed: boolean
+    succeed: boolean,
+    records?: any
 }
 
-const http = async (config: AxiosRequestConfig, isShowMsg = true, successMsg?: string): Promise<Response> => {
+const http = async (config: AxiosRequestConfig, isShowMsg = true): Promise<Response> => {
     try {
         const axiosRes = await instance(config)
         const res: Response = axiosRes.data
@@ -44,7 +45,7 @@ const http = async (config: AxiosRequestConfig, isShowMsg = true, successMsg?: s
         if (res) {
             if (res.succeed) {
                 if (isShowMsg) {
-                    ElMessage.success(successMsg ? successMsg : res.message || '成功')
+                    ElMessage.success(res.message || '成功')
                 }
                 return res
             }

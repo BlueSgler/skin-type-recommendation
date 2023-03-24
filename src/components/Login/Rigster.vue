@@ -15,9 +15,8 @@
             <el-form-item prop="nickname" label=" ">
                 <el-input type="text" placeholder="昵称" :suffix-icon="User" v-model="registerForm.nickname" />
             </el-form-item>
-            <el-form-item prop="gengder" label=" " class="gender" style="position:relative;height: 30px;">
-                <div class="title"
-                    style="position:absolute;z-index: 2;color: black; top:11px; left:10px; font-size: 14px; color:#a8abb2;margin-right: 20px;">
+            <el-form-item prop="gengder" class="gender" style="position:relative;height: 30px;">
+                <div class="title">
                     性别</div>
                 <el-radio-group v-model="registerForm.gender" class="margin">
                     <el-radio :label="0" size="large">女</el-radio>
@@ -60,7 +59,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, Ref } from 'vue'
 import { Lock, User, Message } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
 import { ElForm } from 'element-plus';
 import { swicher } from '../../utils/mySwitch'
 import { getImageCode, sentCode, register } from '../../apis/login'
@@ -81,11 +79,8 @@ const doGetImgeCode = async () => {
     randomString.value = generateRandomString(5)
     try {
         const res = await getImageCode(randomString.value)
-        console.log(res, 'here====================>');
         if (res) {
             const blob = new Blob([res as any])
-            console.log(blob.type, '=>type');
-
             const url = URL.createObjectURL(blob)
             imageCode.value = url
             console.log(url)
@@ -96,14 +91,14 @@ const doGetImgeCode = async () => {
     }
 }
 const registerForm = reactive({
-    username: '3032964348',
-    password: '1234564',
-    confirmPassword: '1234564',
+    username: '',
+    password: '',
+    confirmPassword: '',
     gender: 0,
-    nickname: 'bler',
+    nickname: '',
     avatar: '',
-    verifyCode: 'efef',
-    code: '123'
+    verifyCode: '',
+    code: ''
 })
 const registerFormRef: Ref<typeof ElForm | undefined> = ref();
 const rules = reactive({
@@ -120,31 +115,24 @@ const rules = reactive({
     ],
     nickname: [
         { required: true, message: '请输入昵称', trigger: 'blur' },
-        // { min: 6, message: '长度应该大于6', trigger: 'blur' },
     ],
     verifyCode: [
         { required: true, message: '请输入验证码', trigger: 'blur' }
     ]
 })
 const doSentCode = async () => {
-    const res = await sentCode(randomString.value, registerForm.code, registerForm.username,'邮箱验证码已发送，请注意查收!')
+    const res = await sentCode(randomString.value, registerForm.code, registerForm.username)
     console.log(res);
 
 }
 const doRegister = () => {
     registerFormRef.value?.validate(async (valid: boolean) => {
         if (valid && registerForm.password === registerForm.confirmPassword) {
-            console.log(registerForm);
             let newRegisterForm: any = { ...registerForm }
             delete newRegisterForm.confirmPassword
             delete newRegisterForm.code
             console.log(newRegisterForm);
             const res = await register(newRegisterForm)
-            console.log(res);
-
-
-
-
         } else {
             return
         }
@@ -152,19 +140,32 @@ const doRegister = () => {
 }
 doGetImgeCode()
 onMounted(() => {
-
 })
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+:deep(.el-form-item__content) {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.title {
+    padding-left: 30px;
+    z-index: 2;
+    color: black;
+    font-size: 16px;
+    color: #a8abb2;
+    margin-right: 20px;
+}
+
 .margin {
     margin-left: 60px;
 }
 
-/* 登录和注册盒子 */
-.login-form,
+/* 注册盒子 */
 .register-form {
+    min-width: 400px;
     flex: 1;
     height: 100%;
 }

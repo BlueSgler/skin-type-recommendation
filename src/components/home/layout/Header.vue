@@ -5,8 +5,8 @@
             <span class="common" v-if="userInfo.identity === 1" @click="goto('/admin')">管理</span>
         </div>
         <div class="right-box">
-            <div class="avatar">
-                <img :src="userInfo.avatar" alt="" @click="goToMy">
+            <div class="avatar" @click="goToMy">
+                <img :src="userInfo.avatar" alt="">
             </div>
             <div class="logout" @click="logout">退出</div>
         </div>

@@ -31,8 +31,6 @@ import Header from '../components/admin/layout/Header.vue'
     }
 
     .el-main {
-        // box-shadow: 1px 2px 3px 4px #bdbdbd;
-        // width: 100%;
         overflow-y: visible;
         border-left: 1px solid #e5e5e5;
     }

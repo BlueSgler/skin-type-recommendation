@@ -16,12 +16,12 @@ const getImageCode = (key: string) => {
     })
 }
 
-const sentCode = (key: string, code: string, username: string, successMsg: string) => {
+const sentCode = (key: string, code: string, username: string) => {
     const queryParams = `?key=${key}&code=${code}&username=${username}`;
     return instance({
         method: 'GET',
         url: `/user/codes/email${queryParams}`,
-    }, successMsg);
+    });
 };
 
 const register = (data: object) => {
