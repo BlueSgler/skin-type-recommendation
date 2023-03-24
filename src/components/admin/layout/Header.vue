@@ -14,9 +14,9 @@
 </template>
 
 <script setup lang='ts'>
-import router from '../../../router';
+import router from '@/router';
 import { storeToRefs } from 'pinia'
-import { useStore } from '../../../stores/user'
+import { useStore } from '@/stores/user'
 const store = useStore();
 let { userInfo, token } = storeToRefs(store);
 const logout = () => {

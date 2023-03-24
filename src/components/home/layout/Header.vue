@@ -14,9 +14,9 @@
 </template>
 
 <script setup lang='ts'>
-import router from '../../../router';
+import router from '@/router';
 import { storeToRefs } from 'pinia'
-import { useStore } from '../../../stores/user'
+import { useStore } from '@/stores/user'
 const store = useStore();
 let { userInfo, token } = storeToRefs(store);
 const goToMy = () => {
@@ -44,9 +44,7 @@ const goto = (url: string) => {
 
 
     .left-box {
-        // font-size: 22px;
         cursor: pointer;
-
         .common {
             margin-right: 10px;
         }

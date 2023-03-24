@@ -16,7 +16,7 @@
 
 
 <script setup lang='ts'>
-import Header from '../components/home/layout/Header.vue'
+import Header from '@/components/home/layout/Header.vue'
 import Detail from '@/components/home/layout/Detail.vue'
 </script>
 

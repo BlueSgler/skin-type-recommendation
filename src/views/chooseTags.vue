@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang='ts'>
-import Title from '../components/navigation/Title.vue'
+import Title from '@/components/navigation/Title.vue'
 import Content from '../components/navigation/Content.vue'
 
 

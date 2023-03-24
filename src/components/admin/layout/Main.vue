@@ -11,7 +11,5 @@
 <style lang='scss' scoped>
 .container {
     width: 100%;
-    // height: calc(100vh - 60px);
-    // overflow: hidden;
 }
 </style>

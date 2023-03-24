@@ -14,9 +14,9 @@
     </el-container>
 </template>
 <script lang="ts" setup>
-import Menu from '../components/admin/layout/Menu.vue'
-import Main from '../components/admin/layout/Main.vue'
-import Header from '../components/admin/layout/Header.vue'
+import Menu from '@/components/admin/layout/Menu.vue'
+import Main from '@/components/admin/layout/Main.vue'
+import Header from '@/components/admin/layout/Header.vue'
 </script>
 <style lang="scss" scoped>
 .el-header {

@@ -91,16 +91,10 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
 
 }
 const doUpdateAvatar = async () => {
-    const res = await updateAvatar({ url: url.value })
+    await updateAvatar({ url: url.value })
     DogetUserInfo()
 }
-// const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-//     if (rawFile.type !== 'image/png' || rawFile.type !== 'image/j') {
-//         ElMessage.error('Avatar picture must be JPG format!')
-//         return false
-//     }
-//     return true
-// }
+
 const dialogFormVisible = ref(false)
 const nameForm = ref({
     name: userInfo.value.nickname
@@ -112,29 +106,18 @@ const passwordForm = ref({
 const DoUpdateNick = async () => {
     const res = await updateNick(nameForm.value.name)
     if (res.succeed) {
-        ElMessage.success('修改成功!')
         DogetUserInfo()
         dialogFormVisible.value = false
-    } else {
-        ElMessage.error(res.message)
     }
 }
 
 const DoUpdatePassword = async () => {
-    const res = await updatePassword(passwordForm.value.password)
-    if (res.succeed) {
-        ElMessage.success('修改成功!')
-        dialogFormVisible2.value = false
-    } else {
-        ElMessage.error(res.message)
-    }
+    await updatePassword(passwordForm.value.password)
 }
 const DogetUserInfo = async () => {
     const res = await getUserInfo()
     if (res.succeed) {
         userInfo.value = res.result
-    } else {
-        ElMessage.error(res.message)
     }
 }
 const goto = () => {
@@ -148,9 +131,7 @@ const goto = () => {
     background-size: cover;
     min-height: calc(100vh - 60px - 120px);
     padding: 100px 300px;
-
     .content {
-
         .avater {
             margin: 0 auto;
             width: 100px;

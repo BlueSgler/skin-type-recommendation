@@ -13,7 +13,7 @@
 
 
 <script setup lang='ts'>
-import Header from '../components/home/layout/Header.vue'
+import Header from '@/components/home/layout/Header.vue'
 import Main from '@/components/home/layout/Main.vue'
 </script>
 
@@ -24,10 +24,5 @@ import Main from '@/components/home/layout/Main.vue'
     .el-header {
         background-color: #f9c8c4;
     }
-
-    // .el-container {
-    //     min-width: 100vh;
-    //     background-color: pink;
-    // }
 }
 </style>

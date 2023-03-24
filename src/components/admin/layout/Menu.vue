@@ -28,12 +28,6 @@ import { ref, shallowRef } from 'vue';
 
 import router from '@/router';
 const defaultActive = router.currentRoute.value.path // 获取当前路径，让menu正确显示
-// import {
-//     getUserInfoApi
-// } from '@/apis/mine'
-
-
-
 
 //菜单类型
 type MenuType = {

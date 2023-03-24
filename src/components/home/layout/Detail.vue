@@ -83,7 +83,6 @@ const goto = () => {
             .tags {
                 display: flex;
                 flex-wrap: wrap;
-
                 .tag {
                     padding: 5px 10px;
                     margin-right: 10px;

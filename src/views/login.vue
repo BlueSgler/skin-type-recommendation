@@ -7,7 +7,7 @@
         <h1>WELCOME</h1>
         <p>JOIN US!</p>
         <div class="img-box">
-          <img src="../assets/img/waoku.jpg" alt="" id="avatar" />
+          <img src="@/assets/img/waoku.jpg" alt="" id="avatar" />
         </div>
       </div>
       <!-- 注册盒子 -->
@@ -18,8 +18,8 @@
 </template>
 
 <script setup lang='ts'>
-import Login from '../components/Login/Login.vue';
-import Rigster from '../components/Login/Rigster.vue';
+import Login from '@/components/Login/Login.vue';
+import Rigster from '@/components/Login/Rigster.vue';
 
 </script>
 

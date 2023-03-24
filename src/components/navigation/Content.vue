@@ -33,20 +33,16 @@ type Item = {
     children?: Item[],
     id: number
     name: string
-    // tagVOList: Array
     parentId: number
     isNeeded: number
     createTime: string
 }
-
-
 
 const items = ref<Item[]>([])
 
 interface Tag {
     id: number
     name: string
-    // tagVOList: Array
     parentId: number
     isNeeded: number
     createTime: string

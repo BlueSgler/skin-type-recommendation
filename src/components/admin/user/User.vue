@@ -57,11 +57,8 @@ interface User {
 
 const tableData = ref<User[]>([])
 const DoGetUsers = async () => {
-  const res = await getUsers('1', '100')
-  console.log(res, '===>');
+  const res = await getUsers('1', '20')
   if (res.succeed) {
-
-
     res.records.forEach((item: any) => {
       if (item.identity === 1) {
         item.identity = true
@@ -69,31 +66,15 @@ const DoGetUsers = async () => {
         item.identity = false
       }
     });
-
     tableData.value = res.records
-  } else {
-    ElMessage.error(res.message)
   }
-
-
 }
 const changeIdentity = async (row: any) => {
-  const res = await addUser(JSON.stringify(row.id))
-  if (res.succeed) {
-    ElMessage.success('添加管理员成功！')
-  } else {
-    ElMessage.error(res.message)
-  }
+  await addUser(JSON.stringify(row.id))
 }
 const handleDelete = async (index: number, row: User) => {
   console.log(index, row)
-  const res = await deleteUser(JSON.stringify(row.id))
-  if (res.succeed) {
-    ElMessage.success('删除成功！')
-    DoGetUsers()
-  } else {
-    ElMessage.error(res.message)
-  }
+  await deleteUser(JSON.stringify(row.id))
 }
 
 

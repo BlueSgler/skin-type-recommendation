@@ -62,16 +62,14 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getAllRootTags, getTags, addTag, deleteTag, deleteArray } from '../../../apis/tag'
+import { getAllRootTags, getTags, addTag, deleteTag, deleteArray } from '@/apis/tag'
 import { Search, InfoFilled } from '@element-plus/icons-vue'
 import Add from '../../common/Add.vue'
 import Delete from '../../common/Delete.vue'
-import { ElMessage } from 'element-plus';
 
 interface Tag {
   id: number
   name: string
-  // tagVOList: Array
   parentId: number
   isNeeded: number
   createTime: string
