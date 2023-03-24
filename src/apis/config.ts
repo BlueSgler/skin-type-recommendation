@@ -34,42 +34,6 @@ type Response = {
     succeed: boolean
 }
 
-// instance.interceptors.response.use(
-//     (res) => {
-//         // 对响应数据做些什么
-//         console.log(res, '====>resp');
-//         return Promise.resolve(res as Res)
-//         // const res = response.data
-//         // console.log(res, '---->res');
-
-
-//         // if (typeof res.data === 'object' && res.data !== null) {
-//         //     if (res.succeed) {
-//         //         return response;
-//         //     }
-//         //     throw new Error(res.message)
-//         // }
-
-//         // if (res.data) {
-//         //     return response
-//         // }
-
-//         // if (res instanceof Blob) {
-//         //     return response
-//         // }
-//         // if (res.succeed) {
-//         //     return response
-//         // }
-
-//         // throw new Error(res.message)
-//     },
-//     error => {
-//         // 对响应错误做些什么
-//         ElMessage.error(error.message || '未知错误')
-//         return Promise.reject(error)
-//     }
-// )
-
 const http = async (config: AxiosRequestConfig, isShowMsg = true, successMsg?: string): Promise<Response> => {
     try {
         const axiosRes = await instance(config)

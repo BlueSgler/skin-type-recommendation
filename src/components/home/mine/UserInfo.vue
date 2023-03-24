@@ -161,10 +161,6 @@ const goto = () => {
             display: flex;
             justify-content: center;
             align-items: center;
-
-            // img {
-            //     width: 100%;
-            // }
             .avatar-uploader {
                 display: flex;
                 justify-content: center;
