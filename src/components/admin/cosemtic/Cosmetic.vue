@@ -63,7 +63,7 @@
                 </el-form-item>
                 <el-form-item label="封面" label-width="140px">
                     <div class="post-img">
-                        <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
+                        <el-upload class="avatar-uploader" action="http://127.0.0.1:8978/upload" :show-file-list="false"
                             :on-success="handleAvatarSuccess" :headers="header">
                             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
                             <el-icon v-else class="avatar-uploader-icon" size="50">
@@ -114,7 +114,7 @@
                 </el-form-item>
                 <el-form-item label="封面" label-width="140px">
                     <div class="post-img">
-                        <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
+                        <el-upload class="avatar-uploader" action="http://127.0.0.1:8978/upload" :show-file-list="false"
                             :on-success="handleAvatarSuccess" :headers="header">
                             <img v-if="editForm.cover" :src="editForm.cover" class="avatar" />
                             <el-icon v-else class="avatar-uploader-icon" size="50">

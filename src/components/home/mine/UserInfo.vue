@@ -2,7 +2,7 @@
     <div class="container">
         <div class="content">
             <div class="avater">
-                <el-upload class="avatar-uploader" action="http://www.pymjl.com:8978/upload" :show-file-list="false"
+                <el-upload class="avatar-uploader" action="http://127.0.0.1:8978/upload" :show-file-list="false"
                     :on-success="handleAvatarSuccess" :headers="header">
                     <img v-if="imageUrl" :src="imageUrl" />
                     <el-icon v-else class="avatar-uploader-icon" size="50">

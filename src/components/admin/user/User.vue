@@ -84,5 +84,13 @@ DoGetUsers()
 .container {
   width: 100%;
   height: calc(100vh - 60px);
+
+  .img {
+    width: 50px;
+
+    img {
+      width: 100%;
+    }
+  }
 }
 </style>
