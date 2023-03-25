@@ -110,7 +110,7 @@ const questions = ref([
             },
             {
                 label: 'E',
-                answer: 'D. 我从不用粉底'
+                answer: 'E. 我从不用粉底'
             },
         ]
     },
@@ -282,6 +282,8 @@ const questions = ref([
     }])
 questions.value.forEach((item) => {
     answers.value.push({ id: item.id, label: '' })
+    console.log(answers.value);
+
 })
 
 const getScore = async () => {
