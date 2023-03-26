@@ -21,7 +21,7 @@
             </div>
             <div class="btn-box">
                 <el-button type="primary" @click="goto">重新选择偏好</el-button>
-                <el-button type="danger">注销账号</el-button>
+                <el-button type="danger" @click="zhuxiao">注销账号</el-button>
 
             </div>
         </div>
@@ -64,7 +64,7 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useStore } from '@/stores/user'
 import router from '@/router';
-import { updatePassword, updateNick, getUserInfo, updateAvatar } from '@/apis/user'
+import { updatePassword, updateNick, getUserInfo, updateAvatar, logout } from '@/apis/user'
 import { ElMessage } from 'element-plus';
 import type { UploadProps } from 'element-plus'
 const store = useStore();
@@ -123,6 +123,13 @@ const DogetUserInfo = async () => {
 const goto = () => {
     router.push('/chooseTags')
 }
+
+const zhuxiao = async () => {
+    const res = await logout()
+    if (res.succeed) {
+        router.push('/login')
+    }
+}
 </script>
 
 <style lang='scss' scoped>
@@ -131,6 +138,7 @@ const goto = () => {
     background-size: cover;
     min-height: calc(100vh - 60px - 120px);
     padding: 100px 300px;
+
     .content {
         .avater {
             margin: 0 auto;
@@ -142,6 +150,7 @@ const goto = () => {
             display: flex;
             justify-content: center;
             align-items: center;
+
             .avatar-uploader {
                 display: flex;
                 justify-content: center;

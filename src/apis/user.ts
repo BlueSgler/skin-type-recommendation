@@ -97,6 +97,13 @@ const score = (data: object) => {
         data
     })
 }
-export { getUsers, addUser, deleteUser, getUserInfo, updateNick, updatePassword, updateAvatar, score };
+
+const logout = () => {
+    return instance({
+        method: 'POST',
+        url: '/user/logout',
+    })
+}
+export { getUsers, addUser, deleteUser, getUserInfo, updateNick, updatePassword, updateAvatar, score, logout };
 
 
